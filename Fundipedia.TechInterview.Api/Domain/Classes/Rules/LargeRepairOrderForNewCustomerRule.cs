@@ -3,7 +3,7 @@ using Fundipedia.TechInterview.Models;
 
 namespace Fundipedia.TechInterview.Domain.Classes.Rules;
 
-public class LargeRepairForNewCustomer : IOrderRule
+public class LargeRepairOrderForNewCustomerRule : IOrderRule
 {
     public OrderStatus GetStatus() => OrderStatus.Closed;
 

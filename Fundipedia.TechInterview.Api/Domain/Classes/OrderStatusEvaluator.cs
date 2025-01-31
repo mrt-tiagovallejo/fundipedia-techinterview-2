@@ -12,8 +12,11 @@ public class OrderStatusEvaluator : IOrderStatusEvaluator
     {
         _orderRules = new List<IOrderRule>
         {
-            new LargeRepairForNewCustomer()
-            // TODO: add remaining rules
+            new LargeRepairOrderForNewCustomerRule(),
+            new LargeRushHireOrderRule(),
+            new LargeRepairOrderRule(),
+            new RushOrderForNewCustomerRule(),
+            new DefaultRule()
         };
     }
 

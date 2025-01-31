@@ -1,58 +1,88 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="app">
+    <h1>Order Status Request</h1>
+    <form @submit.prevent="submitOrder">
+      <div>
+        <label>
+          <input type="checkbox" v-model="orderRequest.isRushOrder" />
+          Is Rush Order
+        </label>
+      </div>
+
+      <div>
+        <label>Order Type:</label>
+        <select v-model="orderRequest.orderType">
+          <option value="Repair">Repair</option>
+          <option value="Hire">Hire</option>
+        </select>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" v-model="orderRequest.isNewCustomer" />
+          Is New Customer
+        </label>
+      </div>
+
+      <div>
+        <label>
+          <input type="checkbox" v-model="orderRequest.isLargeOrder" />
+          Is Large Order
+        </label>
+      </div>
+      
+      <button type="submit">Check Status</button>
+    </form>
+
+    <div v-if="orderStatus" class="result">
+      <h2>Order Status: {{ orderStatus }}</h2>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      orderRequest: {
+        isRushOrder: false,
+        orderType: "Repair",
+        isNewCustomer: false,
+        isLargeOrder: false,
+      },
+      orderStatus: null,
+    };
+  },
+  methods: {
+    async submitOrder() {
+      try {
+        const response = await axios.post("https://localhost:7198/api/orders/status", this.orderRequest);
+        this.orderStatus = response.data;
+      } catch (error) {
+        console.error("Error checking order status:", error);
+        alert("Failed to check order status. Please try again.");
+      }
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style>
+.app {
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+form {
+  margin-bottom: 20px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
 }
 </style>

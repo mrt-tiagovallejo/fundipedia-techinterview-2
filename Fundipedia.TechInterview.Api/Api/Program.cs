@@ -4,6 +4,14 @@ using Fundipedia.TechInterview.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        policy => policy.WithOrigins("http://localhost:8080") // Replace with your frontend URL
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -11,6 +19,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IOrderStatusEvaluator, OrderStatusEvaluator>();
 
 var app = builder.Build();
+
+// Enable the CORS policy
+app.UseCors("AllowVueApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

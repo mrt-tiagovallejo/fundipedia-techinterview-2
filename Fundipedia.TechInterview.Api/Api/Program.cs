@@ -24,7 +24,7 @@ app.UseHttpsRedirection();
 app.MapPost("/api/orders/status", (OrderRequest request, IOrderStatusEvaluator evaluator) =>
 {
     var status = evaluator.Evaluate(request);
-    return Results.Ok(status);
+    return Results.Ok(status.ToString());
 })
 .WithName("OrdersStatus")
 .WithOpenApi();

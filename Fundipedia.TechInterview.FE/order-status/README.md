@@ -1,24 +1,14 @@
 # order-status
 
-## Project setup
+## Project setup & run
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Configurations
+In api.js file, edit the following line
 ```
-npm run build
+const API_BASE_URL = "https://localhost:7198/api";
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+and replace it with the URL from your backend api.

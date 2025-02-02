@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { OrderApi } from "@/api";
 
 export default {
   data() {
@@ -58,7 +58,7 @@ export default {
   methods: {
     async submitOrder() {
       try {
-        const response = await axios.post("https://localhost:7198/api/orders/status", this.orderRequest);
+        const response = await OrderApi.sendRequest(this.orderRequest);
         this.orderStatus = response.data;
       } catch (error) {
         console.error("Error checking order status:", error);
